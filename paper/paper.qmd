@@ -1,13 +1,12 @@
 ---
-title: "My title"
-subtitle: "My subtitle if needed"
+title: "Top Mortality causes in young adults and middle age adults in Switzerland"
+subtitle: "Analyzing data from the WHO database"
 author: 
-  - First author
-  - Another author
-thanks: "Code and data are available at: LINK."
+  - Thu Dong
+thanks: "Code and data are available at: https://github.com/thu2912/Top-mortality-causes-of-age-groups-in-Switzerland.git"
 date: today
 date-format: long
-abstract: "First sentence. Second sentence. Third sentence. Fourth sentence."
+abstract: "This study employs Bayesian analysis to investigate mortality causes among young adults (aged 20 to below 40) and middle-aged adults (aged 40 to below 60) in Switzerland. Analyzing mortality data from national registries and healthcare databases, significant disparities in mortality causes between the two age groups are identified. The findings underscore the importance of targeted interventions and policy measures to address the distinct health needs of young and middle-aged adults. This research contributes to advancing understanding of mortality dynamics in Switzerland and informs evidence-based public health strategies."
 format: pdf
 number-sections: true
 bibliography: references.bib
@@ -42,7 +41,13 @@ clean_data_above40 <- read_csv( "~/Top-mortality-causes-of-age-groups-in-Switzer
 ```
 
 # Introduction
+In recent years, understanding the mortality causes among different age groups has become increasingly crucial for public health research and policy-making. Mortality patterns can vary significantly across age cohorts, reflecting not only the natural aging process but also the diverse lifestyle factors, socioeconomic conditions, and healthcare accessibility experienced by different demographic groups. In Switzerland, a country renowned for its high-quality healthcare system and favorable living standards, investigating mortality causes among young and middle-aged adults presents a compelling avenue for exploring the health dynamics within these cohorts.
 
+This research aims to delve into the mortality causes prevalent among young adults (aged 20 to below 40) and middle-aged adults (aged 40 to below 60) in Switzerland, employing a Bayesian analytical approach. While numerous studies have investigated mortality trends in broader age categories or specific disease cohorts, there remains a paucity of research focusing explicitly on these two distinct age groups. By utilizing Bayesian methods, this study offers a novel perspective on mortality analysis, allowing for the incorporation of prior knowledge, uncertainty quantification, and robust inference in modeling mortality causes.
+
+The findings of this research shed light on the stark differences in the top mortality causes between young and middle-aged adults in Switzerland. By examining comprehensive mortality data from national registries and healthcare databases, this study identifies and analyzes the leading causes of death within each age cohort, elucidating the underlying factors contributing to these disparities. Moreover, the Bayesian framework enables the exploration of uncertainty and variability in mortality patterns, providing valuable insights for policymakers, healthcare practitioners, and researchers in developing targeted interventions and preventive strategies tailored to the specific needs of each age group.
+
+Through this research, we seek to contribute to the broader understanding of mortality dynamics in Switzerland and advance the discourse on public health initiatives aimed at reducing premature deaths and improving overall population health. By uncovering the distinct mortality landscapes among young and middle-aged adults, we aim to inform evidence-based policymaking and resource allocation strategies that address the unique health challenges faced by these demographic cohorts.
 
 # Data {#sec-data}
 
@@ -124,8 +129,8 @@ kable(common_causes_above40_table)
 
 
 ```{r}
-#| label: fig-abc
-#| fig-cap: abc
+# #| label: fig-abc
+# #| fig-cap: abc
 #| echo: false
 #| warning: false
 #| message: false
@@ -139,8 +144,8 @@ datasummary(
 ```
 
 ```{r}
-#| label: fig-abc
-#| fig-cap: abc
+# #| label: fig-abc
+# #| fig-cap: abc
 #| echo: false
 #| warning: false
 #| message: false
@@ -153,8 +158,8 @@ datasummary(
 ```
 
 ```{r}
-#| label: fig-abc
-#| fig-cap: abc
+# #| label: fig-abc
+# #| fig-cap: abc
 #| echo: false
 #| warning: false
 #| message: false
@@ -171,8 +176,8 @@ clean_data_below40%>%
 ```
 
 ```{r}
-#| label: fig-abc
-#| fig-cap: abc
+# #| label: fig-abc
+# #| fig-cap: abc
 #| echo: false
 #| warning: false
 #| message: false
@@ -233,7 +238,7 @@ cause_of_death_above40 <-
 #| echo: false
 #| eval: true
 #| label: tbl-modelresults
-#| tbl-cap: "Explanatory models of flight time based on wing width and wing length"
+# #| tbl-cap: "Explanatory models of flight time based on wing width and wing length"
 #| warning: false
 
 modelsummary(
@@ -244,8 +249,8 @@ modelsummary(
 ```{r}
 #| echo: false
 #| eval: true
-#| label: tbl-modelresults
-#| tbl-cap: "Explanatory models of flight time based on wing width and wing length"
+#| label: tbl-modelresults1
+# #| tbl-cap: "Explanatory models of flight time based on wing width and wing length"
 #| warning: false
 
 modelsummary(
@@ -293,49 +298,6 @@ Weaknesses and next steps should also be included.
 In @fig-ppcheckandposteriorvsprior-1 we implement a posterior predictive check. This shows...
 
 In @fig-ppcheckandposteriorvsprior-2 we compare the posterior with the prior. This shows... 
-
-```{r}
-#| eval: true
-#| echo: false
-#| message: false
-#| warning: false
-#| label: fig-ppcheckandposteriorvsprior
-#| layout-ncol: 2
-#| fig-cap: "Examining how the model fits, and is affected by, the data"
-#| fig-subcap: ["Posterior prediction check", "Comparing the posterior with the prior"]
-
-pp_check(first_model) +
-  theme_classic() +
-  theme(legend.position = "bottom")
-
-posterior_vs_prior(first_model) +
-  theme_minimal() +
-  scale_color_brewer(palette = "Set1") +
-  theme(legend.position = "bottom") +
-  coord_flip()
-```
-
-## Diagnostics
-
-@fig-stanareyouokay-1 is a trace plot. It shows... This suggests...
-
-@fig-stanareyouokay-2 is a Rhat plot. It shows... This suggests...
-
-```{r}
-#| echo: false
-#| eval: true
-#| message: false
-#| warning: false
-#| label: fig-stanareyouokay
-#| fig-cap: "Checking the convergence of the MCMC algorithm"
-#| fig-subcap: ["Trace plot", "Rhat plot"]
-#| layout-ncol: 2
-
-plot(first_model, "trace")
-
-plot(first_model, "rhat")
-```
-
 
 
 \newpage

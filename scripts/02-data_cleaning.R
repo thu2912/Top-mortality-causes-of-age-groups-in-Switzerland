@@ -1,11 +1,11 @@
 #### Preamble ####
-# Purpose: Cleans the raw plane data recorded by two observers..... [...UPDATE THIS...]
-# Author: 
-# Date:
+# Purpose: Cleans the raw data from the WHO Mortality website
+# Author: Thu Dong
+# Date: 20 APril 2024
 # Contact: thu.dong@mail.utoronto.ca 
 # License: MIT
 # Pre-requisites: Install needed packages
-# Any other information needed? 
+
 
 #### Workspace setup ####
 library(tidyverse)

@@ -1,12 +1,12 @@
 ---
 title: "Top Mortality causes in young adults and middle age adults in Switzerland"
-subtitle: "Analyzing data from the WHO database"
+subtitle: "Analyzing Switzerland Mortality causes data in 2010, 2015, adn 2019 from WHO database"
 author: 
   - Thu Dong
 thanks: "Code and data are available at: https://github.com/thu2912/Top-mortality-causes-of-age-groups-in-Switzerland.git"
 date: today
 date-format: long
-abstract: "This study employs Bayesian analysis to investigate mortality causes among young adults (aged 20 to below 40) and middle-aged adults (aged 40 to below 60) in Switzerland. Analyzing mortality data from national registries and healthcare databases, significant disparities in mortality causes between the two age groups are identified. The findings underscore the importance of targeted interventions and policy measures to address the distinct health needs of young and middle-aged adults. This research contributes to advancing understanding of mortality dynamics in Switzerland and informs evidence-based public health strategies."
+abstract: "Motivated by the lack of findings on different mortality causes for different age groups, this paper examines the main causes of mortality among young adults and middle-aged adults in Switzerland using data from the WHO Mortality Database for the years 2010, 2015, and 2019. The paper found that the leading causes of death for young adults are self-harm and drug use disorders, while middle-aged adults are most affected by ischemic heart disease and trachea, bronchus, and lung cancers. Moreover, it is also found that one of the main mortality causes in both age groups is self-harm which highlights the importance of mental health."
 format: pdf
 number-sections: true
 bibliography: references.bib
@@ -41,28 +41,37 @@ clean_data_above40 <- read_csv( "~/Top-mortality-causes-of-age-groups-in-Switzer
 ```
 
 # Introduction
-In recent years, understanding the mortality causes among different age groups has become increasingly crucial for public health research and policy-making. Mortality patterns can vary significantly across age cohorts, reflecting not only the natural aging process but also the diverse lifestyle factors, socioeconomic conditions, and healthcare accessibility experienced by different demographic groups. In Switzerland, a country renowned for its high-quality healthcare system and favorable living standards, investigating mortality causes among young and middle-aged adults presents a compelling avenue for exploring the health dynamics within these cohorts.
+Mortality study has become increasingly important in modern society. Understanding mortality causes is vital for medicine and health research, as well as implementing policies that can help increase the quality of living and life expectancy. With Switzerland being the country with the 4th highest life expectancy in the world, there has been much research about the causes of death in Switzerland. However, there have not been a lot of studies that focus on the different causes of death in young adults (20 to 39) and middle-aged adults (40 to 59) in the country.
 
-This research aims to delve into the mortality causes prevalent among young adults (aged 20 to below 40) and middle-aged adults (aged 40 to below 60) in Switzerland, employing a Bayesian analytical approach. While numerous studies have investigated mortality trends in broader age categories or specific disease cohorts, there remains a paucity of research focusing explicitly on these two distinct age groups. By utilizing Bayesian methods, this study offers a novel perspective on mortality analysis, allowing for the incorporation of prior knowledge, uncertainty quantification, and robust inference in modeling mortality causes.
+Therefore, in this paper, we will investigate the top mortality causes in young adults and middle-aged adults in Switzerland and discuss some trends and patterns in healthcare that were witnessed in the data. The estimand that we’re trying to estimate is the number of deaths by different mortality causes in young adults and middle-aged adults. We aim to provide empirical evidence on different causes of death in two age groups and investigate the reasons behind the differences in health issues in two age groups. This paper uses data obtained from the open database, WHO Mortality database, which exhibits information on mortality causes of deaths filtered by country, sex, year, and age group. The data used in this paper were the Mortality causes in Switzerland in the years 2010,2015, and 2019 as it gives a general idea of the mortality causes from 2010 to 2019, filtered by age group. 
 
-The findings of this research shed light on the stark differences in the top mortality causes between young and middle-aged adults in Switzerland. By examining comprehensive mortality data from national registries and healthcare databases, this study identifies and analyzes the leading causes of death within each age cohort, elucidating the underlying factors contributing to these disparities. Moreover, the Bayesian framework enables the exploration of uncertainty and variability in mortality patterns, providing valuable insights for policymakers, healthcare practitioners, and researchers in developing targeted interventions and preventive strategies tailored to the specific needs of each age group.
+We found that on average, the top causes of death in young adults are self-harm and drug use disorder, and the top mortality causes in middle-aged adults are Ischaemic heart disease, as well as trachea, bronchus, and lung cancers. Additionally, we found a trend of high rate of self-harm in both young adults and middle-aged adults. The findings of the paper highlight the importance of healthy habits such as a healthy diet and exercise and the reduction of harmful substance use, such as tobacco, to maintain a healthy heart and lungs. Additionally, the paper also highlights the importance of mental health and policies that allow for accessible mental health support. Moreover, this paper’s findings demonstrate how policymakers play a major role in addressing public health issues through effective interventions. 
 
-Through this research, we seek to contribute to the broader understanding of mortality dynamics in Switzerland and advance the discourse on public health initiatives aimed at reducing premature deaths and improving overall population health. By uncovering the distinct mortality landscapes among young and middle-aged adults, we aim to inform evidence-based policymaking and resource allocation strategies that address the unique health challenges faced by these demographic cohorts.
+The remainder of the paper is structured as follows: @sec-data introduces the data used for analysis and findings, including visualizations of the variables of interest, @sec-model presents the Negative Binomial regression model to justify the relationship between the number of deaths and causes of deaths, @sec-result displays the interpretations of the model alongside other findings from analyzing the data, and @sec-discussion provides a discussion on the implications of the findings as well as the weaknesses of this paper and its next steps for further study on this subject. 
+
 
 # Data {#sec-data}
 
-## Raw Data 
+## Data Sources
+The data utilized in this paper is provided by the  World Health Organization  WHO) specifically from the WHO Mortality Database (“Global Health Estimates: Leading Causes of Death” 2021) which focuses on health estimates and global mortality. At present, the WHO Mortality database contains data concerning top mortality causes in 120 different countries from 2000 until 2019, covering large age groups from 0 to above 85. WHO is a data source that offers openly available data to the public and can be downloaded free from the website. Key elements of the WHO Mortality Database include country-specific data categorized by age group, sex, and year; detailed data on causes of death by number of deaths; a visualization portal for data exploration which enhanced user experience; and raw data files for download. 
+
+The database’s data collection methods include collaborating with health authorities and statistical agencies from over 120 countries. One of the steps in the data collection process is using the Civil Registration and Vital Statistics (CRVS) Systems as it records events like deaths, births, causes of deaths, etc which is reported and maintained by national health authorities. Another step of collecting data is processing data with death data obtained by count and population size by sex and age estimated by using census data and annual population estimates. Other steps after collecting the data are standardized coding and quality assurance. Although different steps of the collection have been highlighted, the specifics of each step were not available publicly. 
+
 
 ## Clean Data
+he data utilized for this paper is downloaded manually through the WHO Mortality Database. All the data analysis was done through R programming language (@citeR) with the aid of the following packages:rstanarm (@rstanarm), tidyverse (@tidyverse), knitr (@knitr), modelsummary (@modelsummary), ggplot2 (@ggplot2), dplyr (@dplyr), parameters (@Parameters), broom (@broom), broom.mixed (@broommixed). 
+
+The data is prepared specifically by downloading data for each age group separately (20 to under 40 and 40 to under 60). Then, the variables selected for the analysis are year, population, number of deaths, and causes of death. Additionally, two other variables were created: age which takes values ‘below 40’ and ‘above 40’ to respectively refer to young adults and middle-aged adults. Overall, 2 different data sets were created based on age groups. For each age group, data was then merged from the years 2010, 2015, and 2019. This resulted in two data sets, one for young adults, and one for middle-aged adults. Finally, I ensured consistency in variable naming and format during the merging process. This two data sets are created to analyze trends in mortality causes among young and middle-aged adults in Switzerland using data from 2010, 2015, and 2019.
+The two analysis datasets include 30 observations each and 6 variables each: Year, deaths, causes, death rate, and age. Each observation shows one of the mortality causes in one of the 3 years researched. For example, @tbl-table1 and @tbl-table2 display the top 10 causes of death in Switzerland in 2010. In both tables, year recorded the years that this data was reported from, causes recorded some mortality causes such as self-harm, drug use disorders, road injury, breast cancer, etc, the population is constant for an age group in a year, deaths recorded the number of deaths attributed to each cause within the population. Furthermore, the death rate is the number of deaths per 100,000 population for each cause, calculated based on the number of deaths over population, and the age variable reports the age category which is "below 40" when looking at young adults (20 to under 40), and “above 40" for middle age adults (40 to under 60). Similar datasets with the same attributes can be used for this analysis. However, since we were unable to find data that have separated observations into each age group. Therefore, the data that is used for this paper is created using data from WHO Mortality Database. 
 
 
 ```{r}
-#| label: tbl-data-below40
+#| label: tbl-table1
 #| tbl-cap: Top 10 Mortality Causes in Switzerland for young adults in 2010 
 #| echo: false
 #| warning: false
 #| message: false
-
+#| tbl-pos: H
 #cleaned data
 head(clean_data_below40, n=10)|>
   kable(
@@ -72,12 +81,12 @@ head(clean_data_below40, n=10)|>
 ```
 
 ```{r}
-#| label: tbl-data-above40
+#| label: tbl-table2
 #| tbl-cap: Top 10 Mortality Causes in Switzerland for middle ages in 2010 
 #| echo: false
 #| warning: false
 #| message: false
-
+#| tbl-pos: H
 #cleaned data
 head(clean_data_above40, n=10)|>
   kable(
@@ -86,13 +95,21 @@ head(clean_data_above40, n=10)|>
   )
 ```
 
+## Variable of interest. 
+### Causes of death among young adults in Switzerland. 
+
+@tbl-table3 shows the common causes of death in 2010, 2015, and 2019 and the total number of deaths per cause in young adults in Switzerland. It is shown that in those 3 years, there were 595 deaths caused by Self-harm, 260 deaths caused by Drug use disorders, 181 deaths caused by Road injury, 79 deaths caused by Brain and nervous system cancers, and 73 deaths caused by Falls. 
+
+
+@fig-fig1 shows the line plot that illustrates the trend of the number of deaths for common causes among young adults over the years 2010, 2015, and 2019. Self-harm appears to have the highest number of deaths across all three years, with a slight decrease from 2010 to 2019. Drug use disorders also show a fairly constant number of deaths from 2010 to 2015, followed by a slight decline by 2019. Additionally, Road injuries show a stable decrease in the number of deaths throughout the 3 years, from approximately 75 in 2010 to around 40 in 2019. Brain and nervous system cancers and Falls show a constant low number of deaths in both, at approximately 25 cases in each in all 3 years. 
+
 
 
 ```{r}
-#| label: tbl-common_mortality_causes_below40
-#| fig-cap: Common Mortality Causes for young adults in 2010,1015,and 2019
+#| label: tbl-table3
+#| tbl-cap: Common Mortality Causes for young adults in 2010,1015,and 2019
 #| echo: false
-
+#| tbl-pos: H
 top_10_2010_below40 <- clean_data_below40$Cause[clean_data_below40$Year.x == 2010]
 top_10_2015_below40 <- clean_data_below40$Cause[clean_data_below40$Year.x == 2015]
 top_10_2019_below40  <- clean_data_below40$Cause[clean_data_below40$Year.x == 2019]
@@ -107,11 +124,35 @@ common_causes_below40_table <- total_deaths_below40  %>%
 
 kable(common_causes_below40_table)
 ```
-```{r}
-#| label: tbl-common_mortality_causes_above40
-#| fig-cap: Common Mortality Causes for middle age adults in 2010,1015,and 2019
-#| echo: false
 
+```{r}
+#| label: fig-fig1
+#| fig-cap:  Common mortality causes in young adults in 2010, 2015, and 2019
+#| echo: false
+#| warning: false
+#| message: false
+#| fig-pos: H
+
+clean_data_below40%>%
+  filter(Cause %in% common_causes_below40_table$Cause) %>%
+  ggplot(aes(x = Year.x, y = Deaths, color = Cause)) +
+  geom_line() +
+  theme_minimal() +
+  scale_color_brewer(palette = "Set1") +
+  labs(x = "Year", y = "Number of deaths")+
+  scale_x_continuous(breaks = c(2010, 2015, 2019))+ 
+  ylim(0,250)# Adjust the limits as needed
+```
+
+
+### Causes of death among Middle-aged adults in Switzerland. 
+@tbl-tbl4 shows the common causes of death in 2010, 2015, and 2019 and the total number of deaths per cause in middle-aged adults in Switzerland. It is shown that in those 3 years, there were 1656 deaths caused by Ischaemic heart disease, 1548 deaths caused by Trachea, bronchus, lung cancers, 1285 deaths caused by Self-harm, 825 deaths caused by Breast cancer, and 618 deaths caused by Cirrhosis of the liver. 
+
+```{r}
+#| label: tbl-tbl4
+#| tbl-cap: Common Mortality Causes for middle age adults in 2010,1015,and 2019
+#| echo: false
+#| tbl-pos: H
 top_10_2010_above40 <- clean_data_above40$Cause[clean_data_above40$Year.x == 2010]
 top_10_2015_above40 <- clean_data_above40$Cause[clean_data_above40$Year.x == 2015]
 top_10_2019_above40  <- clean_data_above40$Cause[clean_data_above40$Year.x == 2019]
@@ -127,61 +168,15 @@ common_causes_above40_table <- total_deaths_above40  %>%
 kable(common_causes_above40_table)
 ```
 
+@fig-fig2 is the line plot that illustrates the number of deaths for common causes among middle-aged adults in 2010, 2015, and 2019. Ischaemic heart disease appears to have the highest number of deaths across all three years. However, there was a significant decrease in the number of deaths caused by Ischaemic heart disease from 2010 to 2015, followed by a slight decrease from 2015 to 2019. Compared to 2019, there were over 100 more deaths caused by Ischaemic heart disease in 2010. Trachea, bronchus, and lung cancers constantly decreased in the number of deaths throughout the 3 years, from approximately 580 in 2010 to around 480 in 2019. Self-harm also shows a fairly constant number of deaths in those 3 years, at approximately over 400. Additionally, Breast cancer demonstrates a slight decrease in the number of deaths from 2010 to 2019. There was also a small decrease in the number of deaths from Cirrhosis of the liver from 2010 to 2015 and remained constant in 2019.
 
 ```{r}
-# #| label: fig-abc
-# #| fig-cap: abc
+#| label: fig-fig2
+#| fig-cap: Common mortality causes in middle-aged adults in 2010, 2015, and 2019
 #| echo: false
 #| warning: false
 #| message: false
-
-datasummary(
-  Deaths ~ Min + Mean + Max + SD + Var + N,
-  fmt = 0,
-  data = clean_data_below40
-)
-
-```
-
-```{r}
-# #| label: fig-abc
-# #| fig-cap: abc
-#| echo: false
-#| warning: false
-#| message: false
-
-datasummary(
-  Deaths ~ Min + Mean + Max + SD + Var + N,
-  fmt = 0,
-  data = clean_data_above40
-)
-```
-
-```{r}
-# #| label: fig-abc
-# #| fig-cap: abc
-#| echo: false
-#| warning: false
-#| message: false
-
-clean_data_below40%>%
-  filter(Cause %in% common_causes_below40_table$Cause) %>%
-  ggplot(aes(x = Year.x, y = Deaths, color = Cause)) +
-  geom_line() +
-  theme_minimal() +
-  scale_color_brewer(palette = "Set1") +
-  labs(x = "Year", y = "Number of deaths")+
-  scale_x_continuous(breaks = c(2010, 2015, 2019))+ 
-  ylim(0,250)# Adjust the limits as needed
-```
-
-```{r}
-# #| label: fig-abc
-# #| fig-cap: abc
-#| echo: false
-#| warning: false
-#| message: false
-
+#| fig-pos: H
 clean_data_above40%>%
   filter(Cause %in% common_causes_above40_table$Cause) %>%
   ggplot(aes(x = Year.x, y = Deaths, color = Cause)) +
@@ -193,31 +188,79 @@ clean_data_above40%>%
   ylim(100,650)# Adjust the limits as needed
 ```
 
-# Model
+### Basic Summary statistics
+
+@tbl-sum1 is the summary statistics of @tbl-table1 showing its minimum, mean, maximum, standard deviation, variance, and sample size of young adults’ top mortality causes data in 2010, 2015, and 2019. The summary statistics show that the mean number of deaths is 50, with a minimum of 14, and a maximum of 204 for a sample size of 30. The variance is high because the range of the data is large as the variance is 3077. 
+
+
+```{r}
+#| label: tbl-sum1
+#| tbl-cap: Summary statistics for young adults
+#| echo: false
+#| warning: false
+#| message: false
+#| tbl-pos: H
+datasummary(
+  Deaths ~ Min + Mean + Max + SD + Var + N,
+  fmt = 0,
+  data = clean_data_below40
+)
+
+```
+
+```{r}
+#| label: tbl-sum2
+#| tbl-cap: Summary statistics for middle-aged adults
+#| echo: false
+#| warning: false
+#| message: false
+#| tbl-pos: H
+
+datasummary(
+  Deaths ~ Min + Mean + Max + SD + Var + N,
+  fmt = 0,
+  data = clean_data_above40
+)
+```
+
+@tbl-sum2 is the summary statistics of @tbl-table2 showing its minimum, mean, maximum, standard deviation, variance, and sample size of middle-aged adults’ top mortality causes data in 2010, 2015, and 2019. The summary statistics show that the mean number of deaths is 272, with a minimum of 103, and a maximum of 603 for a sample size of 30. The variance is high because the range of the data is large as the variance is 26240.
+
+
+The variable in the data set is measured by using the results of the data collection in the WHO Mortality Database. The number of deaths is measured in integers and by the total number of deaths reported to the national database that year. Population is also an integer that is measured using the demographic data of the country. Additionally, Causes is a categorical variable that records all popular causes that lead to death in a year.  Age group is a categorical variable that records whether or not a person is “above 40” or “below 40”. While “below 40” measures young adults, “above 40” measures middle-aged adults. Finally, death rate per 100,000 is measured by dividing the total number of death of a specific mortality causes by the population and times 100,000.
+
+# Model {#sec-model}
 
 
 ## Model set-up
+Understanding the impact of different causes of death on mortality rates can allow policymakers to create policies that target certain alarming health issues and reduce the death rates in the country.  Furthermore,  policymakers and researchers can prioritize efforts to address the leading causes of mortality and allocate resources effectively. Therefore, to further understand the relationship between causes of death and death rates, we construct a negative binomial regression with the Bayesian framework: 
 
 
 
-\begin{align} 
-y_i|\mu_i, \sigma &\sim \mbox{Normal}(\mu_i, \sigma) \\
-\mu_i &= \alpha + \beta_i + \gamma_i\\
-\alpha &\sim \mbox{Normal}(0, 2.5) \\
-\beta &\sim \mbox{Normal}(0, 2.5) \\
-\gamma &\sim \mbox{Normal}(0, 2.5) \\
-\sigma &\sim \mbox{Exponential}(1)
+\begin{align}
+y_i &\sim \text{NegBin}(\mu_i, \sigma) \\
+\log(\mu_i) &= \beta_0 + \beta_1 x_i \\
+\beta_0 &\sim \text{Normal}(0, 2.5) \\
+\beta_1 &\sim \text{Normal}(0, 2.5) \\
+\sigma &\sim \text{Exponential}(1)
 \end{align}
 
+
+- $y_i$ is the number of deaths in young adults or middle aged adultsin Switzerland
+- $\beta_0$ is the coefficient of intercept 
+- $\beta_1$ is the coefficient for an average increase in the number of death of a mortality cause
+- $x_i$ is the causes of death in young adults or middle aged adults
 
 
 ### Model justification
 
+A negative binomial is used to analyze the relationship between the number of deaths and the causes of death in each age group. We assume that there is a relationship between the causes of death and the number of deaths which was somewhat demonstrated in Figure 1 and Figure 2. The reason why we use a negative binomial regression to analyze this relationship is that negative binomial regression is suitable for counting data such as the number of deaths. Moreover, it takes into account overdispersion which happens when variance exceeds the mean which is shown in the summary statistics. Therefore, we pick the Negative Binomial regression over the Poisson regression. Additionally, we apply the Bayesian framework to our analysis as it allows for prior knowledge to be included in the model. Therefore, we assume that all coefficient follows a normal distribution with a mean of 0 and a standard deviation of 2.5 which means we allow some variation in the coefficient of the model.
 
 
-# Results
+# Results {#sec-result}
+## Model 1
 
-Our results are summarized in @tbl-modelresults.
+@tbl-modelresults1 shows the result of the relationship between the cause of death and the number of deaths for young adults in Switzerland. The intercept represents the expected log count when a young adult has Brain and nervous system cancers which is approximately 3.283. The expected log count of deaths among young adults with drug use disorder increases by 1.192 which is associated with more death for individuals with drug disorder compared to individuals with Brain and nervous system cancers. Additionally, young individuals who passed away because of a fall are associated with a 0.090 decrease in the expected log count compared to young individuals with Brain and nervous system cancers which means that deaths because of Falling in youth are associated with fewer deaths than Brain ner. Notably, it is witnessed that more young adults pass away due to Road injuries than Brain and nervous system cancer with a 0.832 increase in the expected log count. Finally, young adults who have self-harm tendencies have a 2.019 increase in the expected log count compared to Brain and nervous system cancer which indicates that self-harm is associated with a higher number of deaths in young adults.
+
 
 ```{r}
 #| echo: false
@@ -237,22 +280,27 @@ cause_of_death_above40 <-
 ```{r}
 #| echo: false
 #| eval: true
-#| label: tbl-modelresults
-# #| tbl-cap: "Explanatory models of flight time based on wing width and wing length"
+#| label: tbl-modelresults1
+#| tbl-cap: "Relationship between causes of deaths and number of deaths in young adults" 
 #| warning: false
-
+#| tbl-pos: H
 modelsummary(
   list(
     " Below 40" = cause_of_death_below40
 ))
 ```
+
+## Model 2
+
+@tbl-modelresults2 shows the result of the relationship between the cause of death and the number of deaths for middle-aged adults in Switzerland. The intercept represents the expected log count when a young adult has Breast cancer which is approximately 5.634. This indicates that on average, breast cancer is associated with 279.77 deaths in a year. The expected log count of middle-aged adults with Self-harm increases by 0.445 which indicates that self-harm is associated with more death than Breast cancer in middle-aged adults. Additionally, middle-aged individuals who passed away because of Cirrhosis of the liver are associated with a 0.277 decrease in the expected count compared to middle-aged individuals with Breast Cancer. Notably, it appears that more middle-aged adults pass away due to Trachea, bronchus, and lung cancers than Breast cancer with a 0.629 increase in the expected log count. Finally, middle-aged adults who have Ischaemic heart disease have a 0.694 increase in the expected log count compared to Breast cancer. This indicates that Trachea, bronchus, lung cancer, and Ischaemic heart disease are associated with a higher number of deaths in middle-aged adults.
+
 ```{r}
 #| echo: false
 #| eval: true
-#| label: tbl-modelresults1
-# #| tbl-cap: "Explanatory models of flight time based on wing width and wing length"
+#| label: tbl-modelresults2
+#| tbl-cap: "Relationship between causes of deaths and number of deaths in middle-aged adults" 
 #| warning: false
-
+#| tbl-pos: H
 modelsummary(
   list(
     " Above 40" = cause_of_death_above40
@@ -262,25 +310,38 @@ modelsummary(
 
 
 
+# Discussion {#sec-discussion}
 
-# Discussion
+## The differences between mortality causes of young adults and middle-aged adult
 
-## First discussion point {#sec-first-point}
+After analyzing the data, it appears that the number of deaths in middle-aged adults is much higher than in young adults. For example, @tbl-tbl3 and table—tbl4 shows that in 2010,2015, and 2019, the number of deaths by Ischaemic heart disease and Trachea, bronchus, and lung cancers in middle-aged adults is over 3 times the number of deaths by Self-harm in young adults.  witnessed that top mortality causes are vastly different between young adults and middle-aged adults. 
 
-```{r}
+@fig-fig2 demonstrates that most of the top causes of death in middle-aged adults are noncommunicable diseases such as Ischaemic heart disease, Trachea, bronchus, and lung cancers,  Breast cancer, and Cirrhosis of the liver. This number indicates that the number of deaths that are caused by a decline in heart and lung health skyrockets as soon as they become middle-aged adults as diseases like Ischaemic heart disease, Trachea, bronchus, and lung cancers were not among the top mortality causes in young adults. 
 
-```
+While middle-aged adults experience physical health decline, it appears that deaths caused by mental health issues such as Self-harm and Drug use disorder, and injuries such as road injuries are the main causes of deaths in young adults. Notably, the two main causes of death in young adults are self-harm and drug use disorder with a total of approximately 600 cases of Self-harm and 260 cases of drug use disorder. One of the reasons why young adults tend to experience fewer noncommunicable diseases is the resilience in their youthful bodies and healthy habits of diet and regular exercise. 
 
 
-If my paper were 10 pages, then should be be at least 2.5 pages. The discussion is a chance to show off what you know and what you learnt from all this. 
+## Leading cause of death in middle-aged people in Switzerland. 
+As shown in @tbl-tbl4, Ischaemic heart disease (IHD) is the leading cause of death in middle-aged adults. Notably, the leading cause of death for the whole population in Switzerland is Ischaemic heart disease with approximately 11,000 cases per year since 2010. (“Coronary Heart Disease in Switzerland” 2020). This disease is not only common in Switzerland, but it is also common worldwide, It results from reduced blood flow to the heart muscle due to narrowed or blocked coronary arteries. Some risk factors for this disease include high blood pressure, high cholesterol, smoking, diabetes, and obesity. It is reported that IHD is responsible for approximately 16% of total deaths worldwide1.(World 2020). 
 
-## Second discussion point
+One of the reasons why IHD is the highest cause of death in Switzerland is because of the citizen’s tobacco usage. It is known that tobacco usage is one of the risk factors for IHD. In 2017, Swiss smokers used an average of 9.5 cigarettes per day. Additionally, approximately 21% of smokers consumed at least 20 cigarettes per day. Overall, 6% of the Swiss population aged 15 and over were smokers. (“Level of Use - Swiss Association for Tobacco Control” 2016). It is shown that smokers are 2 or 4 times more likely to develop IHD than non-smokers. With these statistics in mind, policymakers passed regulations such as banning smoking indoors and banning selling tobacco to people under 18.  
 
-## Third discussion point
+
+## Self-harm is one of the prevalent causes of death in Switzerland
+ Among the top mortality causes in young adults and middle-aged adults, Self-harm is the common cause of death in both age groups. As shown in @fig-fig1 and @fig-fig2 , self-harm is the leading cause of death among young adults in Switzerland and it is the 3rd most common mortality cause in middle-aged adults. Notably, the number of deaths caused by self-harm in middle-aged adults is higher than in young adults. @fig-fig1 and @fig-fig2 demonstrate that on average, there were approximately 200 cases of deaths by self-harm in young adults in a year while there were approximately 400 deaths by self-harm in middle-aged adults in a year on average. This illustrates that self-harm is a concerning issue in Switzerland and understanding its underlying factors is crucial to prevent it. 
+ 
+Switzerland witnessed an alarming rate of self-harm incidents. A government-commissioned study in the French-speaking part of Switzerland documented 554 cases of self-harm by 490 patients over a ten-month period. Additionally, half of the patients were aged 18 to 34, and 65% of them were reported to have a difficult socioeconomic situation. (SWI swissinfo.ch 2019). In 2016, Switzerland launched a national action plan on self- harm/ suicide prevention with some key measures: raise awareness about these issues, provide accessible help, recognize early behavior of self-harm and timely intervene, reduce means of suicide and self-harm, etc.
 
 ## Weaknesses and next steps
 
-Weaknesses and next steps should also be included.
+### Weaknesses
+
+A limitation that affects external validation of the analysis is that since we use data from Switzerland in specific age groups, we can make the same conclusion for the same age group in another country. Moreover, the number of years used in the research is limited. Therefore, the results could be inconclusive. Additionally, another limitation is that data from the WHO Mortality Database is only available from 2000 to 2019, we are unsure of the mortality causes in recent years. Moreover, a limitation regarding the research's internal validity is that by using the Negative Binomial models, we assume a previously existing relationship between the number of deaths and causes of death. Additionally, since we’re using the Negative Binomial models, we may missed other models that may provide better results that we have not considered. 
+
+### Next step 
+
+In the future, we will extend the study to include more years and possibly conduct a time-series analysis to observe trends over a continuous period. This change can also help us study for effect of different policies on mortality rates. Additionally, we can also compare the mortality causes and trends in Switzerland with those in other countries with similar socioeconomic conditions. As a result, we can identify the unique factors that make Switzerland one of the countries with the longest life expectancy. 
+
 
 \newpage
 

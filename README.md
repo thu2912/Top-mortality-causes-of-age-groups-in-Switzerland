@@ -1,4 +1,4 @@
-# Top Mortality causes in young adults and middle age adults in Switzerland
+# Top Mortality causes in young adults and middle-aged adults in Switzerland
 
 ## Overview
 
@@ -21,10 +21,5 @@ Raw data file is obtained from the WHO Mortality Database with this link: https:
 
 ## Statement on LLM usage
 
-Aspects of the code were written with the help of the auto-complete tool, Codriver. The abstract and introduction were written with the help of ChatHorse and the entire chat history is available in others/llms/usage.txt.
+The paper was written with the help of Chat GPT4 and Bing CoPilot and the entire chat history is available in others/llms/usage.txt.
 
-## Some checks
-
-- [ ] Change the rproj file name so that it's not starter_folder.Rproj
-- [ ] Change the README title so that it's not Starter folder
-- [ ] Remove this checklist
